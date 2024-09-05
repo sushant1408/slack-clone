@@ -67,7 +67,6 @@ export const PreferencesModal = ({
 
   const handleRemove = async () => {
     const confirmed = await confirm();
-
     if (!confirmed) {
       return;
     }
