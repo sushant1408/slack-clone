@@ -11,7 +11,7 @@ const WorkspaceIdPage = ({}: WorkspaceIdPageProps) => {
     id: workspaceId,
   });
 
-  return <div>ID: {JSON.stringify(workspace)}</div>;
+  return <div></div>;
 };
 
 export default WorkspaceIdPage;

@@ -8,7 +8,7 @@ type ToolbarProps = {};
 
 export const Toolbar = ({}: ToolbarProps) => {
   const workspaceId = useWorkspaceId();
-  const { isWorkspaceLoading, workspace } = useGetWorkspace({
+  const { workspace } = useGetWorkspace({
     id: workspaceId,
   });
 
