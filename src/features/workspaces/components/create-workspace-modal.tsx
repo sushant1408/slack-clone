@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -8,35 +9,43 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import { useCreateWorkspace } from "../api/use-create-workspace";
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 
 type CreateWorkspaceModalProps = {};
 
 export const CreateWorkspaceModal = ({}: CreateWorkspaceModalProps) => {
+  const router = useRouter();
+
   const [open, setOpen] = useCreateWorkspaceModal();
-  const { mutate, isLoading, isError, isSettled, isSuccess } = useCreateWorkspace();
+  const { mutate, isLoading, isError, isSettled, isSuccess } =
+    useCreateWorkspace();
 
   const [name, setName] = useState("");
 
   const handleClose = () => {
     setOpen(false);
+    setName("");
   };
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    mutate({ name }, {
-      onSuccess(data) {
-          
-      },
-      onError(error) {
-          
-      },
-      onSettled() {
-          
-      },
-    });
+    mutate(
+      { name },
+      {
+        onSuccess(data) {
+          toast.success("Workspace created");
+          handleClose();
+          router.push(`/workspace/${data}`);
+        },
+        onError(error) {
+          toast.error("Something went wrong");
+        },
+        onSettled() {},
+      }
+    );
   };
 
   return (
