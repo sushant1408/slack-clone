@@ -48,7 +48,7 @@ export const get = query({
 });
 
 export const current = query({
-  args: { id: v.id("workspaces") },
+  args: { workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
     const userId = await auth.getUserId(ctx);
 
@@ -59,7 +59,7 @@ export const current = query({
     const member = await ctx.db
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", args.id).eq("userId", userId)
+        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
       )
       .unique();
 

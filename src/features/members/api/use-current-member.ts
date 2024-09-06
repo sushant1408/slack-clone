@@ -4,11 +4,11 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 type UseCurrentMemberProps = {
-  id: Id<"workspaces">;
+  workspaceId: Id<"workspaces">;
 };
 
-export const useCurrentMember = ({ id }: UseCurrentMemberProps) => {
-  const data = useQuery(api.members.current, { id });
+export const useCurrentMember = ({ workspaceId }: UseCurrentMemberProps) => {
+  const data = useQuery(api.members.current, { workspaceId });
   const isMemberLoading = data === undefined;
 
   return { member: data, isMemberLoading };

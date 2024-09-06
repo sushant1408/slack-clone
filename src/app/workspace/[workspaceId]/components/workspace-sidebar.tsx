@@ -11,25 +11,29 @@ import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useGetMembers } from "@/features/members/api/use-get-members";
+import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
+import { useChannelId } from "@/hooks/use-channel-id";
+import { useUserId } from "@/hooks/use-user-id";
 import { WorkspaceHeader } from "./workspace-header";
 import { SidebarItem } from "./sidebar-item";
 import { WorkspaceSection } from "./workspace-section";
 import { UserItem } from "./user-item";
-import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 
 type WorkspaceSidebarProps = {};
 
 export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
   const workspaceId = useWorkspaceId();
+  const channelId = useChannelId();
+  const userId = useUserId();
 
   const [_open, setOpen] = useCreateChannelModal();
 
-  const { member, isMemberLoading } = useCurrentMember({ id: workspaceId });
+  const { member, isMemberLoading } = useCurrentMember({ workspaceId });
   const { workspace, isWorkspaceLoading } = useGetWorkspace({
     id: workspaceId,
   });
-  const { channels, isChannelsLoading } = useGetChannels({ workspaceId });
-  const { members, isMembersLoading } = useGetMembers({ id: workspaceId });
+  const { channels } = useGetChannels({ workspaceId });
+  const { members } = useGetMembers({ workspaceId });
 
   if (isWorkspaceLoading || isMemberLoading) {
     return (
@@ -55,8 +59,18 @@ export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
         isAdmin={member.role === "admin"}
       />
       <div className="flex flex-col px-2 mt-3">
-        <SidebarItem label="Threads" icon={MessageSquareText} id="threads" />
-        <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts" />
+        <SidebarItem
+          label="Threads"
+          icon={MessageSquareText}
+          id="threads"
+          variant={channelId === "threads" ? "active" : "default"}
+        />
+        <SidebarItem
+          label="Drafts & Sent"
+          icon={SendHorizonal}
+          id="drafts"
+          variant={channelId === "drafts" ? "active" : "default"}
+        />
       </div>
       <WorkspaceSection
         label="Channels"
@@ -69,6 +83,7 @@ export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
             label={channel.name}
             icon={Hash}
             id={channel._id}
+            variant={channelId === channel._id ? "active" : "default"}
           />
         ))}
       </WorkspaceSection>
@@ -84,7 +99,7 @@ export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
             label={member.user.name}
             id={member._id}
             image={member.user.image}
-            // variant={}
+            variant={userId === member._id ? "active" : "default"}
           />
         ))}
       </WorkspaceSection>
