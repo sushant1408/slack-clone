@@ -6,6 +6,19 @@ import { Id } from "./_generated/dataModel";
 
 const populateUser = (ctx: QueryCtx, userId: Id<"users">) => ctx.db.get(userId);
 
+const getMember = async (
+  ctx: QueryCtx,
+  workspaceId: Id<"workspaces">,
+  userId: Id<"users">
+) => {
+  return ctx.db
+    .query("members")
+    .withIndex("by_workspace_id_user_id", (q) =>
+      q.eq("workspaceId", workspaceId).eq("userId", userId)
+    )
+    .unique();
+};
+
 export const get = query({
   args: { workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
@@ -15,12 +28,7 @@ export const get = query({
       return [];
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, args.workspaceId, userId);
 
     if (!member) {
       return [];
@@ -56,12 +64,7 @@ export const current = query({
       return null;
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, args.workspaceId, userId);
 
     if (!member) {
       return null;

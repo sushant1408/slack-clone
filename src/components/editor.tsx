@@ -5,9 +5,10 @@ import {
   useRef,
   useState,
 } from "react";
+import Image from "next/image";
 import { PiTextAa } from "react-icons/pi";
 import { MdSend } from "react-icons/md";
-import { ImageIcon, Smile } from "lucide-react";
+import { ImageIcon, Smile, XIcon } from "lucide-react";
 import Quill, { type QuillOptions } from "quill";
 import { Delta, Op } from "quill/core";
 import "quill/dist/quill.snow.css";
@@ -42,6 +43,7 @@ const Editor = ({
   variant = "create",
 }: EditorProps) => {
   const [text, setText] = useState("");
+  const [image, setImage] = useState<File | null>(null);
   const [toolbarVisible, setToolbarVisible] = useState<boolean>(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,6 +52,7 @@ const Editor = ({
   const quillRef = useRef<Quill | null>(null);
   const defaultValueRef = useRef(defaultValue);
   const disabledRef = useRef(disabled);
+  const imageElementRef = useRef<HTMLInputElement>(null);
 
   useLayoutEffect(() => {
     submitRef.current = onSubmit;
@@ -82,7 +85,21 @@ const Editor = ({
             enter: {
               key: "Enter",
               handler: () => {
-                return;
+                const text = quill.getText();
+                const addedImage = imageElementRef.current?.files?.[0] || null;
+
+                const isEmpty =
+                  !addedImage &&
+                  text.replace(/<(.|\n*?>)/g, "").trim().length === 0;
+
+                if (isEmpty) {
+                  return;
+                }
+
+                submitRef.current?.({
+                  image: addedImage,
+                  body: JSON.stringify(quill.getContents()),
+                });
               },
             },
             shift_enter: {
@@ -142,12 +159,47 @@ const Editor = ({
     quill?.insertText(quill?.getSelection()?.index || 0, emoji?.native);
   };
 
-  const isEmpty = text.replace(/<(.|\n*?>)/g, "").trim().length === 0;
+  const isEmpty = !image && text.replace(/<(.|\n*?>)/g, "").trim().length === 0;
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition">
+      <input
+        type="file"
+        accept="image/*"
+        ref={imageElementRef}
+        onChange={(event) => setImage(event.target.files![0])}
+        className="hidden"
+      />
+      <div
+        className={cn(
+          "flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition",
+          disabled && "opacity-50"
+        )}
+      >
         <div ref={containerRef} className="h-full ql-custom" />
+        {!!image && (
+          <div className="p-2">
+            <div className="relative size-[62px] flex items-center justify-center group/image">
+              <Hint label="Remove image">
+                <button
+                  onClick={() => {
+                    setImage(null);
+                    imageElementRef.current!.value = "";
+                  }}
+                  className="hidden group-hover/image:flex rounded-full bg-black/70 hover:bg-black absolute -top-2.5 -right-2.5 text-white size-6 z-[4] border-2 border-white items-center justify-center"
+                >
+                  <XIcon className="size-3.5" />
+                </button>
+              </Hint>
+              <Image
+                src={URL.createObjectURL(image)}
+                alt="Uploaded image"
+                fill
+                className="rounded-xl overflow-hidden border object-cover"
+              />
+            </div>
+          </div>
+        )}
         <div className="flex px-2 pb-2 z-[5]">
           <Hint label={toolbarVisible ? "Hide formatting" : "Show formatting"}>
             <Button
@@ -169,7 +221,7 @@ const Editor = ({
               <Button
                 variant="ghost"
                 size="iconSm"
-                onClick={() => {}}
+                onClick={() => imageElementRef.current?.click()}
                 disabled={disabled}
               >
                 <ImageIcon className="size-4" />
@@ -181,14 +233,19 @@ const Editor = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {}}
+                onClick={onCancel}
                 disabled={disabled}
               >
                 Cancel
               </Button>
               <Button
                 size="sm"
-                onClick={() => {}}
+                onClick={() => {
+                  onSubmit({
+                    image,
+                    body: JSON.stringify(quillRef.current?.getContents()),
+                  });
+                }}
                 disabled={disabled || isEmpty}
                 className="bg-[#007A5A] hover:bg-[#007A5A]/80 text-white"
               >
@@ -198,7 +255,12 @@ const Editor = ({
           )}
           {variant === "create" && (
             <Button
-              onClick={() => {}}
+              onClick={() => {
+                onSubmit({
+                  image,
+                  body: JSON.stringify(quillRef.current?.getContents()),
+                });
+              }}
               disabled={disabled || isEmpty}
               size="iconSm"
               className={cn(

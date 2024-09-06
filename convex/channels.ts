@@ -1,7 +1,21 @@
 import { v } from "convex/values";
 
-import { mutation, query } from "./_generated/server";
+import { mutation, query, QueryCtx } from "./_generated/server";
 import { auth } from "./auth";
+import { Id } from "./_generated/dataModel";
+
+const getMember = async (
+  ctx: QueryCtx,
+  workspaceId: Id<"workspaces">,
+  userId: Id<"users">
+) => {
+  return ctx.db
+    .query("members")
+    .withIndex("by_workspace_id_user_id", (q) =>
+      q.eq("workspaceId", workspaceId).eq("userId", userId)
+    )
+    .unique();
+};
 
 export const create = mutation({
   args: { name: v.string(), workspaceId: v.id("workspaces") },
@@ -12,12 +26,7 @@ export const create = mutation({
       throw new Error("Unauthorized");
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, args.workspaceId, userId);
 
     if (!member || member.role !== "admin") {
       throw new Error("Unauthorized");
@@ -43,12 +52,7 @@ export const get = query({
       return [];
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, args.workspaceId, userId);
 
     if (!member) {
       return [];
@@ -80,12 +84,7 @@ export const getById = query({
       return null;
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", channel.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, channel.workspaceId, userId);
 
     if (!member) {
       return null;
@@ -113,12 +112,7 @@ export const update = mutation({
       throw new Error("Channel not found");
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", channel.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, channel.workspaceId, userId);
 
     if (!member || member.role !== "admin") {
       throw new Error("Unauthorized");
@@ -147,12 +141,7 @@ export const remove = mutation({
       throw new Error("Channel not found");
     }
 
-    const member = await ctx.db
-      .query("members")
-      .withIndex("by_workspace_id_user_id", (q) =>
-        q.eq("workspaceId", channel.workspaceId).eq("userId", userId)
-      )
-      .unique();
+    const member = await getMember(ctx, channel.workspaceId, userId);
 
     if (!member || member.role !== "admin") {
       throw new Error("Unauthorized");
