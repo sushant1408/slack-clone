@@ -79,6 +79,8 @@ const Editor = ({
           ["bold", "italic", "strike"],
           ["link"],
           [{ list: "ordered" }, { list: "bullet" }],
+          ["blockquote"],
+          ["code-block"],
         ],
         keyboard: {
           bindings: {

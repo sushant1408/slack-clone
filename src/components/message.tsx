@@ -13,6 +13,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
 import { MessageReactions } from "./message-reactions";
+import { usePanel } from "@/hooks/use-panel";
+import { ChevronRight } from "lucide-react";
+import { ThreadBar } from "./thread-bar";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
@@ -40,6 +43,7 @@ type MessageProps = {
   threadCount?: number;
   threadImage?: string;
   threadTimestamp?: number;
+  threadName?: string;
 };
 
 const formatFullTime = (date: Date) => {
@@ -70,7 +74,10 @@ export const Message = ({
   threadCount,
   threadImage,
   threadTimestamp,
+  threadName,
 }: MessageProps) => {
+  const { onCloseMessage, onOpenMessage, parentMessageId } = usePanel();
+
   const { mutate: updateMessage, isLoading: isUpdatingMessage } =
     useUpdateMessage();
   const { mutate: removeMessage, isLoading: isRemovingMessage } =
@@ -111,6 +118,9 @@ export const Message = ({
       {
         onSuccess(data) {
           toast.success("Message deleted");
+          if (parentMessageId === id) {
+            onCloseMessage();
+          }
         },
         onError(error) {
           toast.error("Failed to delete message");
@@ -168,6 +178,13 @@ export const Message = ({
                   </span>
                 ) : null}
                 <MessageReactions data={reactions} onChange={handleReaction} />
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  timestamp={threadTimestamp}
+                  name={threadName}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             )}
           </div>
@@ -176,7 +193,7 @@ export const Message = ({
               isAuthor={isAuthor}
               isLoading={isUpdatingMessage}
               handleEdit={() => setEditingId(id)}
-              handleThread={() => {}}
+              handleThread={() => onOpenMessage(id)}
               handleDelete={handleRemoveMessage}
               handleReaction={handleReaction}
               hideThreadButton={hideThreadButton}
@@ -243,6 +260,13 @@ export const Message = ({
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
               <MessageReactions data={reactions} onChange={handleReaction} />
+              <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                timestamp={threadTimestamp}
+                name={threadName}
+                onClick={() => onOpenMessage(id)}
+              />
             </div>
           )}
         </div>
@@ -251,7 +275,7 @@ export const Message = ({
             isAuthor={isAuthor}
             isLoading={isUpdatingMessage}
             handleEdit={() => setEditingId(id)}
-            handleThread={() => {}}
+            handleThread={() => onOpenMessage(id)}
             handleDelete={handleRemoveMessage}
             handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}

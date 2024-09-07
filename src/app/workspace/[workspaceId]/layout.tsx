@@ -1,21 +1,29 @@
 "use client";
 
 import { ReactNode } from "react";
+import { Loader } from "lucide-react";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { usePanel } from "@/hooks/use-panel";
 import { Toolbar } from "./components/toolbar";
 import { Sidebar } from "./components/sidebar";
 import { WorkspaceSidebar } from "./components/workspace-sidebar";
+import { Thread } from "@/features/messages/components/thread";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 type WorkspaceIdLayoutProps = {
   children: ReactNode;
 };
 
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
+  const { onCloseMessage, parentMessageId } = usePanel();
+
+  const showPanel: boolean = !!parentMessageId;
+
   return (
     <div className="h-full">
       <Toolbar />
@@ -34,6 +42,23 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel minSize={20}>{children}</ResizablePanel>
+          {showPanel && (
+            <>
+              <ResizableHandle />
+              <ResizablePanel minSize={20} defaultSize={29}>
+                {parentMessageId ? (
+                  <Thread
+                    messageId={parentMessageId as Id<"messages">}
+                    onClose={onCloseMessage}
+                  />
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <Loader className="size-5 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+              </ResizablePanel>
+            </>
+          )}
         </ResizablePanelGroup>
       </div>
     </div>

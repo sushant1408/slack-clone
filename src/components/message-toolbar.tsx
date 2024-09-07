@@ -1,4 +1,4 @@
-import { MessageSquareText, Pencil, Smile, Trash } from "lucide-react";
+import { MessageSquareText, Pencil, SmilePlus, Trash } from "lucide-react";
 import { EmojiPopover } from "./emoji-popover";
 import { Hint } from "./hint";
 
@@ -24,14 +24,14 @@ export const MessageToolbar = ({
   hideThreadButton,
 }: MessageToolbarProps) => {
   return (
-    <div className="absolute top-0 right-5">
+    <div className="absolute -top-4 right-5">
       <div className="group-hover:opacity-100 opacity-0 transition-opacity border rounded-md shadow-sm bg-white">
         <EmojiPopover
           onEmojiSelect={(emoji) => handleReaction(emoji.native)}
           hint="Add reaction..."
         >
           <Button variant="ghost" size="iconSm" disabled={isLoading}>
-            <Smile className="size-4" />
+            <SmilePlus className="size-4" />
           </Button>
         </EmojiPopover>
         {!hideThreadButton && (
