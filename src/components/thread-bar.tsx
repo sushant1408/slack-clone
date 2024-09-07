@@ -39,8 +39,8 @@ export const ThreadBar = ({
     >
       <div className="flex items-center gap-2 overflow-hidden">
         <Avatar className="rounded-md size-6">
-          <AvatarImage src={image} className="rounded-sm" />
-          <AvatarFallback className="text-xs">
+          <AvatarImage src={image} className="rounded-md" />
+          <AvatarFallback className="bg-sky-500 rounded-md text-xs">
             {name.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>

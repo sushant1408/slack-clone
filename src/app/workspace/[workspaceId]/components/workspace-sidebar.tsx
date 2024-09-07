@@ -13,7 +13,7 @@ import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
 import { useChannelId } from "@/hooks/use-channel-id";
-import { useUserId } from "@/hooks/use-user-id";
+import { useMemberId } from "@/hooks/use-member-id";
 import { WorkspaceHeader } from "./workspace-header";
 import { SidebarItem } from "./sidebar-item";
 import { WorkspaceSection } from "./workspace-section";
@@ -24,7 +24,7 @@ type WorkspaceSidebarProps = {};
 export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
-  const userId = useUserId();
+  const memberId = useMemberId();
 
   const [_open, setOpen] = useCreateChannelModal();
 
@@ -37,7 +37,7 @@ export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
 
   if (isWorkspaceLoading || isMemberLoading) {
     return (
-      <div className="flex flex-col bg-[#5E2C5F] h-full items-center justify-center">
+      <div className="flex bg-[#5E2C5F] h-full items-center justify-center">
         <Loader className="size-5 animate-spin text-white" />
       </div>
     );
@@ -99,7 +99,7 @@ export const WorkspaceSidebar = ({}: WorkspaceSidebarProps) => {
             label={member.user.name}
             id={member._id}
             image={member.user.image}
-            variant={userId === member._id ? "active" : "default"}
+            variant={memberId === member._id ? "active" : "default"}
           />
         ))}
       </WorkspaceSection>

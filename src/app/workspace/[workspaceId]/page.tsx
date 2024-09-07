@@ -59,7 +59,7 @@ const WorkspaceIdPage = ({}: WorkspaceIdPageProps) => {
 
   if (isWorkspaceLoading || isChannelsLoading || isMemberLoading) {
     return (
-      <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
+      <div className="h-full flex items-center justify-center">
         <Loader className="size-5 animate-spin text-muted-foreground" />
       </div>
     );
