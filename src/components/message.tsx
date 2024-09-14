@@ -76,7 +76,7 @@ export const Message = ({
   threadTimestamp,
   threadName,
 }: MessageProps) => {
-  const { onCloseMessage, onOpenMessage, parentMessageId } = usePanel();
+  const { onCloseMessage, onOpenMessage, parentMessageId, onOpenProfile } = usePanel();
 
   const { mutate: updateMessage, isLoading: isUpdatingMessage } =
     useUpdateMessage();
@@ -216,7 +216,7 @@ export const Message = ({
         )}
       >
         <div className="flex items-start gap-2">
-          <button>
+          <button onClick={() => onOpenProfile(memberId)}>
             <Avatar className="rounded-md">
               <AvatarImage
                 className="rounded-md"
@@ -242,7 +242,7 @@ export const Message = ({
             <div className="flex flex-col w-full overflow-hidden">
               <div className="text-sm">
                 <button
-                  onClick={() => {}}
+                  onClick={() => onOpenProfile(memberId)}
                   className="font-bold text-primary hover:underline"
                 >
                   {authorName}

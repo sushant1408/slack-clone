@@ -1,3 +1,4 @@
+import { usePanel } from "@/hooks/use-panel";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 type ConversationHeroProps = {
@@ -9,6 +10,8 @@ export const ConversationHero = ({
   image,
   name = "Member",
 }: ConversationHeroProps) => {
+  const { onOpenProfile } = usePanel();
+
   return (
     <div className="mt-[88px] mx-5 mb-4">
       <div className="flex items-center gap-x-1 mb-2">

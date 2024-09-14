@@ -14,15 +14,17 @@ import { Sidebar } from "./components/sidebar";
 import { WorkspaceSidebar } from "./components/workspace-sidebar";
 import { Thread } from "@/features/messages/components/thread";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { Profile } from "@/features/members/components/profile";
 
 type WorkspaceIdLayoutProps = {
   children: ReactNode;
 };
 
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
-  const { onCloseMessage, parentMessageId } = usePanel();
+  const { onCloseMessage, parentMessageId, onCloseProfile, profileMemberId } =
+    usePanel();
 
-  const showPanel: boolean = !!parentMessageId;
+  const showPanel: boolean = !!parentMessageId || !!profileMemberId;
 
   return (
     <div className="h-full">
@@ -50,6 +52,11 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
                   <Thread
                     messageId={parentMessageId as Id<"messages">}
                     onClose={onCloseMessage}
+                  />
+                ) : profileMemberId ? (
+                  <Profile
+                    profileMemberId={profileMemberId as Id<"members">}
+                    onClose={onCloseProfile}
                   />
                 ) : (
                   <div className="h-full flex items-center justify-center">
