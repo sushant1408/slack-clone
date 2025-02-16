@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { TriangleAlertIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,9 +21,23 @@ import Link from "next/link";
 const SignInCard = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isPending, setIsPending] = useState(false);
 
   const { signIn } = useAuthActions();
+
+  const handleCredentialSignin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsPending(true);
+    signIn("password", {
+      email,
+      password,
+      flow: "signIn",
+    })
+      .catch((error) => setError("Invalid email or password"))
+      .finally(() => setIsPending(false));
+  };
 
   const handleProviderSignin = (provider: "github" | "google") => {
     setIsPending(true);
@@ -37,8 +52,14 @@ const SignInCard = () => {
           use your email or another service to continue
         </CardDescription>
       </CardHeader>
+      {!!error && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlertIcon className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form onSubmit={handleCredentialSignin} className="space-y-2.5">
           <Input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -55,7 +76,12 @@ const SignInCard = () => {
             required
             disabled={isPending}
           />
-          <Button type="submit" className="w-full" size="lg" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            size="lg"
+            disabled={isPending}
+          >
             Continue
           </Button>
         </form>
