@@ -1,6 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,16 +16,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { SignInFlow } from "../types";
 
-interface SignUpCardProps {
-  setState: (state: SignInFlow) => void;
-}
-
-const SignUpCard = ({ setState }: SignUpCardProps) => {
+const SignUpCard = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPending, setIsPending] = useState(false);
+
+  const { signIn } = useAuthActions();
+
+  const handleProviderSignup = (provider: "github" | "google") => {
+    setIsPending(true);
+    signIn(provider).finally(() => setIsPending(false));
+  };
 
   return (
     <Card className="w-full h-full p-8">
@@ -39,6 +46,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Email"
             type="email"
             required
+            disabled={isPending}
           />
           <Input
             value={password}
@@ -46,6 +54,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Password"
             type="password"
             required
+            disabled={isPending}
           />
           <Input
             value={confirmPassword}
@@ -53,30 +62,43 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Password"
             type="password"
             required
+            disabled={isPending}
           />
-          <Button type="submit" className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg" disabled={isPending}>
             Continue
           </Button>
         </form>
         <Separator />
         <div className="flex flex-col gap-y-2.5">
-          <Button variant="outline" size="lg" className="w-full relative">
+          <Button
+            onClick={() => handleProviderSignup("google")}
+            variant="outline"
+            size="lg"
+            className="w-full relative"
+            disabled={isPending}
+          >
             <FcGoogle className="!size-5 absolute left-2.5 top-1/2 -translate-y-1/2" />
             Continue with Google
           </Button>
-          <Button variant="outline" size="lg" className="w-full relative">
+          <Button
+            onClick={() => handleProviderSignup("github")}
+            variant="outline"
+            size="lg"
+            className="w-full relative"
+            disabled={isPending}
+          >
             <FaGithub className="!size-5 absolute left-2.5 top-1/2 -translate-y-1/2" />
             Continue with Github
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
           Already have an account?{" "}
-          <span
+          <Link
+            href="/signin"
             className="text-sky-700 hover:underline cursor-pointer"
-            onClick={() => setState("signIn")}
           >
             Sign in
-          </span>
+          </Link>
         </p>
       </CardContent>
     </Card>

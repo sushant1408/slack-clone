@@ -1,6 +1,9 @@
-import { useState } from "react";
+"use client";
+
+import { FormEvent, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,15 +15,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { SignInFlow } from "../types";
+import Link from "next/link";
 
-interface SignInCardProps {
-  setState: (state: SignInFlow) => void;
-}
-
-const SignInCard = ({ setState }: SignInCardProps) => {
+const SignInCard = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPending, setIsPending] = useState(false);
+
+  const { signIn } = useAuthActions();
+
+  const handleProviderSignin = (provider: "github" | "google") => {
+    setIsPending(true);
+    signIn(provider).finally(() => setIsPending(false));
+  };
 
   return (
     <Card className="w-full h-full p-8">
@@ -38,6 +45,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
             placeholder="Email"
             type="email"
             required
+            disabled={isPending}
           />
           <Input
             value={password}
@@ -45,30 +53,43 @@ const SignInCard = ({ setState }: SignInCardProps) => {
             placeholder="Password"
             type="password"
             required
+            disabled={isPending}
           />
-          <Button type="submit" className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg" disabled={isPending}>
             Continue
           </Button>
         </form>
         <Separator />
         <div className="flex flex-col gap-y-2.5">
-          <Button variant="outline" size="lg" className="w-full relative">
+          <Button
+            onClick={() => handleProviderSignin("google")}
+            variant="outline"
+            size="lg"
+            className="w-full relative"
+            disabled={isPending}
+          >
             <FcGoogle className="!size-5 absolute left-2.5 top-1/2 -translate-y-1/2" />
             Continue with Google
           </Button>
-          <Button variant="outline" size="lg" className="w-full relative">
+          <Button
+            onClick={() => handleProviderSignin("github")}
+            variant="outline"
+            size="lg"
+            className="w-full relative"
+            disabled={isPending}
+          >
             <FaGithub className="!size-5 absolute left-2.5 top-1/2 -translate-y-1/2" />
             Continue with Github
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <span
+          <Link
+            href="/signup"
             className="text-sky-700 hover:underline cursor-pointer"
-            onClick={() => setState("signUp")}
           >
             Sign up
-          </span>
+          </Link>
         </p>
       </CardContent>
     </Card>
