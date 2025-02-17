@@ -24,9 +24,8 @@ const WorkspaceSwitcher = () => {
   });
   const { workspaces, isLoading: isWorkspacesLoading } = useGetWorkspaces();
 
-  const filterteredWorkspaces = workspaces?.filter(
-    (workspace) => workspace?._id !== workspaceId
-  );
+  const filterteredWorkspaces =
+    workspaces?.filter((workspace) => workspace?._id !== workspaceId) || [];
 
   return (
     <DropdownMenu>
@@ -49,19 +48,23 @@ const WorkspaceSwitcher = () => {
             Active Workspace
           </span>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {filterteredWorkspaces?.map((workspace) => (
-          <DropdownMenuItem
-            key={workspace._id}
-            onClick={() => router.push(`/workspace/${workspace._id}`)}
-            className="cursor-pointer capitalize"
-          >
-            <div className="size-9 relative overflow-hidden bg-[#616061] text-white font-semibold text-xl rounded-md flex items-center justify-center mr-2 shrink-0">
-              {workspace?.name?.charAt(0).toUpperCase()}
-            </div>
-            <p className="truncate">{workspace.name}</p>
-          </DropdownMenuItem>
-        ))}
+        {filterteredWorkspaces?.length > 0 && (
+          <>
+            <DropdownMenuSeparator />
+            {filterteredWorkspaces.map((workspace) => (
+              <DropdownMenuItem
+                key={workspace._id}
+                onClick={() => router.push(`/workspace/${workspace._id}`)}
+                className="cursor-pointer capitalize"
+              >
+                <div className="size-9 relative overflow-hidden bg-[#616061] text-white font-semibold text-xl rounded-md flex items-center justify-center mr-2 shrink-0">
+                  {workspace?.name?.charAt(0).toUpperCase()}
+                </div>
+                <p className="truncate">{workspace.name}</p>
+              </DropdownMenuItem>
+            ))}
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => setOpen(true)}

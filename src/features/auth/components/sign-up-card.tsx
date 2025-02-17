@@ -134,7 +134,7 @@ const SignUpCard = () => {
         <p className="text-xs text-muted-foreground">
           Already have an account?{" "}
           <Link
-            href="/signin"
+            href="/sign-in"
             className="text-sky-700 hover:underline cursor-pointer"
           >
             Sign in

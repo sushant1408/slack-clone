@@ -111,7 +111,7 @@ const SignInCard = () => {
         <p className="text-xs text-muted-foreground">
           Don&apos;t have an account?{" "}
           <Link
-            href="/signup"
+            href="/sign-up"
             className="text-sky-700 hover:underline cursor-pointer"
           >
             Sign up
