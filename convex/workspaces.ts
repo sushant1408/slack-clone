@@ -1,7 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { v } from "convex/values";
 
 import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
 
 const generateJoinCode = () => {
   const str = "0123456789abcdefghijklmnopqrstuvwxyz";
