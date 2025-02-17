@@ -31,13 +31,15 @@ export const getWorkspaces = query({
   },
 });
 
-export const currentWorkspace = query({
-  args: {},
-  handler: async (ctx) => {
-    // const userId = await getAuthUserId(ctx);
-    // if (!userId) {
-    //   return null;
-    // }
-    // return await ctx.db.get(userId);
+export const getWorkspaceById = query({
+  args: { workspaceId: v.id("workspaces") },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (!userId) {
+      return null;
+    }
+    
+    return await ctx.db.get(args.workspaceId);
   },
 });

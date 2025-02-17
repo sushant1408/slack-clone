@@ -1,13 +1,11 @@
-import { Id } from "../../../../convex/_generated/dataModel";
+"use client";
 
-interface WorkspaceIdScreenProps {
-  params: Promise<{ workspaceId: Id<"workspaces"> }>;
-}
+import { useGetWorkspaceById } from "@/features/workspaces/api/use-get-workspace-by-id";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
-export default async function WorkspaceIdScreen({
-  params,
-}: WorkspaceIdScreenProps) {
-  const { workspaceId } = await params;
+export default function WorkspaceIdScreen() {
+  const workspaceId = useWorkspaceId();
+  const { workspace } = useGetWorkspaceById({ workspaceId });
 
-  return <>{workspaceId}</>;
+  return <>{JSON.stringify(workspace, null, 4)}</>;
 }
