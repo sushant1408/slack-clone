@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { cn } from "@/lib/utils";
 import { FaBold } from "react-icons/fa";
+import { EmojiPopover } from "./emoji-popover";
 
 type EditorValue = {
   image: File | null;
@@ -142,6 +143,11 @@ const Editor = ({
     }
   };
 
+  const onEmojiSelect = (emoji: any) => {
+    const quill = quillRef.current;
+    quill?.insertText(quill?.getSelection()?.index || 0, emoji.native);
+  };
+
   // replace '\n' or any empty HTML tags for e.g <br /> or <p></p>, remove any white spaces and check for length
   const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
@@ -164,16 +170,11 @@ const Editor = ({
               <PiTextAa />
             </Button>
           </TooltipWrapper>
-          <TooltipWrapper label="Emoji" side="top" align="center">
-            <Button
-              disabled={disabled}
-              size="icon-sm"
-              variant="ghost"
-              onClick={() => {}}
-            >
+          <EmojiPopover onEmojiSelect={onEmojiSelect}>
+            <Button disabled={disabled} size="icon-sm" variant="ghost">
               <SmileIcon />
             </Button>
-          </TooltipWrapper>
+          </EmojiPopover>
           {variant === "create" && (
             <TooltipWrapper label="Image" side="top" align="center">
               <Button
