@@ -29,11 +29,11 @@ const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none relative">
-        <Avatar className="size-10 hover:opacity-75 transition">
-          <AvatarFallback className="bg-sky-500 text-white">
+        <Avatar className="rounded-md size-10 hover:opacity-75 transition">
+          <AvatarFallback className="rounded-md bg-sky-500 text-white">
             {name!.charAt(0).toUpperCase()}
           </AvatarFallback>
-          <AvatarImage src={image} alt={name} />
+          <AvatarImage src={image} alt={name} className="rounded-md" />
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" side="right" className="w-60">
