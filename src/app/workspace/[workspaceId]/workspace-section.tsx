@@ -44,6 +44,7 @@ const WorkspaceSection = ({
         {onNew && (
           <TooltipWrapper label={hint} side="top" align="center">
             <Button
+              onClick={onNew}
               variant="transparent"
               size="icon-sm"
               className="opacity-0 group-hover:opacity-100 transition ml-auto p-0.5 text-sm text-[var(--text-color)] size-6 shrink-0"
