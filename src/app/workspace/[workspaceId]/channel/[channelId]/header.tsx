@@ -19,26 +19,39 @@ import { Input } from "@/components/ui/input";
 import { useUpdateChannel } from "@/features/channels/api/use-update-channel";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { useDeleteChannel } from "@/features/channels/api/use-delete-channel";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
 
 interface HeaderProps {
   title: string;
 }
 
 const Header = ({ title }: HeaderProps) => {
+  const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
-const router = useRouter();
+  const router = useRouter();
   const [ConfirmationDialog, confirm] = useConfirm({
-    message: "This action is irreversible",
+    message:
+      "You are about to delete this channel. This action is irreversible",
     title: "Are you sure?",
   });
 
   const [value, setValue] = useState(title);
   const [renameOpen, setRenameOpen] = useState(false);
 
+  const { currentMember } = useCurrentMember({ workspaceId });
   const { mutate: updateChannel, isPending: isChannelUpdating } =
     useUpdateChannel();
   const { mutate: deleteChannel, isPending: isChannelDeleting } =
     useDeleteChannel();
+
+  const handleRenameOpen = (value: boolean) => {
+    if (currentMember?.role !== "admin") {
+      return;
+    }
+
+    setRenameOpen(value);
+  };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\s+/g, "-").toLowerCase();
@@ -74,7 +87,7 @@ const router = useRouter();
       {
         onSuccess: () => {
           toast.success("Channel deleted");
-          router.replace("/");
+          router.replace(`/workspace/${workspaceId}`);
         },
         onError: () => {
           toast.error("Failed to delete the channel");
@@ -103,14 +116,16 @@ const router = useRouter();
               <DialogTitle># {title}</DialogTitle>
             </DialogHeader>
             <div className="px-4 pb-4 flex flex-col gap-y-2">
-              <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
+              <Dialog open={renameOpen} onOpenChange={handleRenameOpen}>
                 <DialogTrigger asChild>
                   <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold">Channel name</p>
-                      <p className="text-sm text-[#1264a3] hover:underline font-semibold">
-                        Edit
-                      </p>
+                      {currentMember?.role === "admin" && (
+                        <p className="text-sm text-[#1264a3] hover:underline font-semibold">
+                          Edit
+                        </p>
+                      )}
                     </div>
                     <p className="text-sm"># {title}</p>
                   </div>
@@ -144,14 +159,14 @@ const router = useRouter();
                 </DialogContent>
               </Dialog>
 
-              <button
+              {currentMember?.role === "admin" && (<button
                 onClick={handleDelete}
                 disabled={isChannelDeleting}
                 className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50 text-rose-600"
               >
                 <TrashIcon className="size-4" />
                 <p className="text-sm font-semibold">Delete channel</p>
-              </button>
+              </button>)}
             </div>
           </DialogContent>
         </Dialog>
