@@ -5,16 +5,11 @@ import { Id } from "../../../../convex/_generated/dataModel";
 
 interface UseGetChannelByIdProps {
   channelId: Id<"channels">;
-  workspaceId: Id<"workspaces">;
 }
 
-const useGetChannelById = ({
-  channelId,
-  workspaceId,
-}: UseGetChannelByIdProps) => {
+const useGetChannelById = ({ channelId }: UseGetChannelByIdProps) => {
   const data = useQuery(api.channels.getChannelById, {
     channelId,
-    workspaceId,
   });
   const isLoading = data === undefined;
 

@@ -3,12 +3,35 @@
 import { useGetChannelById } from "@/features/channels/api/use-get-channel-by-id";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
+import { Header } from "./header";
 
-export default function ChannelIdScreen() {
+export default function ChannelIdPage() {
   const channelId = useChannelId();
   const workspaceId = useWorkspaceId();
 
-  const { channel } = useGetChannelById({ channelId, workspaceId });
+  const { channel, isLoading } = useGetChannelById({ channelId });
 
-  return <>{JSON.stringify(channel, null, 4)}</>;
+  if (isLoading) {
+    return (
+      <div className="h-full flex-1 flex items-center justify-center">
+        <LoaderIcon className="animate-spin text-muted-foreground !size-5" />
+      </div>
+    );
+  }
+
+  if (!channel) {
+    return (
+      <div className="h-full flex-1 flex flex-col gap-y-2 items-center justify-center">
+        <TriangleAlertIcon className="text-muted-foreground !size-5" />
+        <span className="text-muted-foreground text-sm">Channel not found</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      <Header title={channel.name} />
+    </div>
+  );
 }
