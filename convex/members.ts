@@ -17,8 +17,8 @@ const getMember = async (
     .unique();
 };
 
-const populateUser = (ctx: QueryCtx, useId: Id<"users">) => {
-  return ctx.db.get(useId);
+const populateUser = (ctx: QueryCtx, userId: Id<"users">) => {
+  return ctx.db.get(userId);
 };
 
 export const currentMember = query({

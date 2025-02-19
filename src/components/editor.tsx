@@ -4,14 +4,13 @@ import { RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PiTextAa } from "react-icons/pi";
 import { MdSend } from "react-icons/md";
 import { ImageIcon, SmileIcon, XIcon } from "lucide-react";
+import Image from "next/image";
 import "quill/dist/quill.snow.css";
 
 import { Button } from "./ui/button";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { cn } from "@/lib/utils";
-import { FaBold } from "react-icons/fa";
 import { EmojiPopover } from "./emoji-popover";
-import Image from "next/image";
 
 type EditorValue = {
   image: File | null;
@@ -133,10 +132,6 @@ const Editor = ({
     quill.on(Quill.events.TEXT_CHANGE, (...args) => {
       setText(quill.getText());
     });
-
-    // quill.on(Quill.events.SELECTION_CHANGE, (...args) => {
-    //   // onSelectionChangeRef.current?.(...args);
-    // });
 
     return () => {
       quill.off(Quill.events.TEXT_CHANGE);
