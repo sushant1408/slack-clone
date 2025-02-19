@@ -11,6 +11,8 @@ import { useUpdateMessage } from "@/features/messages/api/use-update-message";
 import { cn } from "@/lib/utils";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteMessage } from "@/features/messages/api/use-delete-message";
+import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
+import { Reactions } from "./reactions";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
 const Editor = dynamic(() => import("./editor"), { ssr: false });
@@ -72,6 +74,8 @@ const Message = ({
     useUpdateMessage();
   const { mutate: deleteMessage, isPending: isDeletingMessage } =
     useDeleteMessage();
+  const { isPending: isPendingToggleReaction, mutate: toggleReaction } =
+    useToggleReaction();
 
   const handleUpdate = ({ body }: { body: string }) => {
     updateMessage(
@@ -112,6 +116,20 @@ const Message = ({
     );
   };
 
+  const handleReaction = (value: string) => {
+    toggleReaction(
+      { messageId: id, value },
+      {
+        onError: () => {
+          toast.error("Failed to set the reaction");
+        },
+      }
+    );
+  };
+
+  const isPending =
+    isUpdatingMessage || isDeletingMessage || isPendingToggleReaction;
+
   if (isCompact) {
     return (
       <>
@@ -119,7 +137,9 @@ const Message = ({
         <div
           className={cn(
             "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
-            isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]"
+            isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]",
+            isDeletingMessage &&
+              "bg-rose-500/50 transform transition-all scale-y-0 origin-bottom duration-200"
           )}
         >
           <div className="flex items-start gap-2">
@@ -132,7 +152,7 @@ const Message = ({
               <div className="h-full w-full">
                 <Editor
                   onSubmit={handleUpdate}
-                  disabled={isUpdatingMessage || isDeletingMessage}
+                  disabled={isPending}
                   defaultValue={JSON.parse(body)}
                   onCancel={() => setEditingId(null)}
                   variant="update"
@@ -147,6 +167,7 @@ const Message = ({
                     (edited)
                   </span>
                 ) : null}
+                <Reactions data={reactions} onChange={handleReaction} />
               </div>
             )}
           </div>
@@ -158,7 +179,7 @@ const Message = ({
               handleEdit={() => setEditingId(id)}
               handleThread={() => {}}
               handleDelete={handleDelete}
-              handleReaction={() => {}}
+              handleReaction={handleReaction}
               hideThreadButton={hideThreadButton}
             />
           )}
@@ -173,7 +194,9 @@ const Message = ({
       <div
         className={cn(
           "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
-          isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]"
+          isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]",
+          isDeletingMessage &&
+            "bg-rose-500/50 transform transition-all scale-y-0 origin-bottom duration-200"
         )}
       >
         <div className="flex items-start gap-2">
@@ -189,7 +212,7 @@ const Message = ({
             <div className="h-full w-full">
               <Editor
                 onSubmit={handleUpdate}
-                disabled={isUpdatingMessage || isDeletingMessage}
+                disabled={isPending}
                 defaultValue={JSON.parse(body)}
                 onCancel={() => setEditingId(null)}
                 variant="update"
@@ -213,6 +236,7 @@ const Message = ({
               {updatedAt ? (
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
+              <Reactions data={reactions} onChange={handleReaction} />
             </div>
           )}
         </div>
@@ -220,11 +244,11 @@ const Message = ({
         {!isEditing && (
           <MessageToolbar
             isAuthor={isAuthor}
-            isPending={isUpdatingMessage || isDeletingMessage}
+            isPending={isPending}
             handleEdit={() => setEditingId(id)}
             handleThread={() => {}}
             handleDelete={handleDelete}
-            handleReaction={() => {}}
+            handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}
           />
         )}
