@@ -1,19 +1,19 @@
-import dynamic from "next/dynamic";
 import { format, isToday, isYesterday } from "date-fns";
+import dynamic from "next/dynamic";
 import { toast } from "sonner";
 
+import { useDeleteMessage } from "@/features/messages/api/use-delete-message";
+import { useUpdateMessage } from "@/features/messages/api/use-update-message";
+import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
+import { useConfirm } from "@/hooks/use-confirm";
+import { usePanel } from "@/hooks/use-panel";
+import { cn } from "@/lib/utils";
 import { Doc, Id } from "../../convex/_generated/dataModel";
+import { MessageToolbar } from "./message-toolbar";
+import { Reactions } from "./reactions";
+import { Thumbnail } from "./thumbnail";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Thumbnail } from "./thumbnail";
-import { MessageToolbar } from "./message-toolbar";
-import { useUpdateMessage } from "@/features/messages/api/use-update-message";
-import { cn } from "@/lib/utils";
-import { useConfirm } from "@/hooks/use-confirm";
-import { useDeleteMessage } from "@/features/messages/api/use-delete-message";
-import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
-import { Reactions } from "./reactions";
-import { usePanel } from "@/hooks/use-panel";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
 const Editor = dynamic(() => import("./editor"), { ssr: false });
@@ -41,6 +41,7 @@ interface MessageProps {
   threadCount?: number;
   threadImage?: string;
   threadTimestamp?: number;
+  messageToolbarClassName?: string;
 }
 
 const formatFullTime = (date: Date) => {
@@ -65,6 +66,7 @@ const Message = ({
   threadCount,
   threadImage,
   threadTimestamp,
+  messageToolbarClassName,
 }: MessageProps) => {
   const { parentMessageId, onOpenMessage, onCloseMessage } = usePanel();
 
@@ -257,6 +259,7 @@ const Message = ({
             handleDelete={handleDelete}
             handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}
+            messageToolbarClassName={messageToolbarClassName}
           />
         )}
       </div>

@@ -2,18 +2,21 @@
 
 import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
 
-import { useGetChannelById } from "@/features/channels/api/use-get-channel-by-id";
-import { useChannelId } from "@/hooks/use-channel-id";
-import { Header } from "./header";
-import { ChatInput } from "./chat-input";
-import { useGetMessages } from "@/features/messages/api/use-get-messages";
 import { MessageList } from "@/components/message-list";
+import { useGetChannelById } from "@/features/channels/api/use-get-channel-by-id";
+import { useGetMessages } from "@/features/messages/api/use-get-messages";
+import { useChannelId } from "@/hooks/use-channel-id";
+import { ChatInput } from "./chat-input";
+import { Header } from "./header";
 
 export default function ChannelIdPage() {
   const channelId = useChannelId();
 
   const { channel, isLoading } = useGetChannelById({ channelId });
   const { results, status, loadMore } = useGetMessages({ channelId });
+
+  const canLoadMore = status === "CanLoadMore";
+  const isLoadingMore = status === "LoadingMore";
 
   if (isLoading || status === "LoadingFirstPage") {
     return (
@@ -40,8 +43,8 @@ export default function ChannelIdPage() {
         channelCreationTime={channel._creationTime}
         data={results}
         loadMore={loadMore}
-        isLoadingMore={status === "LoadingMore"}
-        canLoadMore={status === "CanLoadMore"}
+        isLoadingMore={isLoadingMore}
+        canLoadMore={canLoadMore}
       />
       <ChatInput placeholder={`Message #${channel.name}`} />
     </div>

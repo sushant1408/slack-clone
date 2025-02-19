@@ -1,8 +1,8 @@
-import { FaChevronDown } from "react-icons/fa";
 import { TrashIcon } from "lucide-react";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,13 +14,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useConfirm } from "@/hooks/use-confirm";
 import { Input } from "@/components/ui/input";
-import { useUpdateChannel } from "@/features/channels/api/use-update-channel";
-import { useChannelId } from "@/hooks/use-channel-id";
 import { useDeleteChannel } from "@/features/channels/api/use-delete-channel";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useUpdateChannel } from "@/features/channels/api/use-update-channel";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
+import { useChannelId } from "@/hooks/use-channel-id";
+import { useConfirm } from "@/hooks/use-confirm";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface HeaderProps {
   title: string;

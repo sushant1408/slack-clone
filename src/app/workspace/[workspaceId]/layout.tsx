@@ -1,19 +1,19 @@
 "use client";
 
-import { ReactNode } from "react";
 import { LoaderIcon } from "lucide-react";
+import { ReactNode } from "react";
 
-import { Toolbar } from "./toolbar";
-import { Sidebar } from "./sidebar";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { WorkspaceSidebar } from "./workspace-sidebar";
-import { usePanel } from "@/hooks/use-panel";
 import { Threads } from "@/features/messages/components/thread";
+import { usePanel } from "@/hooks/use-panel";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { Sidebar } from "./sidebar";
+import { Toolbar } from "./toolbar";
+import { WorkspaceSidebar } from "./workspace-sidebar";
 
 export default function WorkspaceIdLayout({
   children,

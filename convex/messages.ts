@@ -1,9 +1,9 @@
-import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { paginationOptsValidator } from "convex/server";
+import { v } from "convex/values";
 
-import { mutation, query, QueryCtx } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
+import { mutation, query, QueryCtx } from "./_generated/server";
 
 const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) => {
   const messages = await ctx.db

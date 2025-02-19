@@ -1,7 +1,8 @@
-import { UserButton } from "@/features/auth/components/user-button";
-import { WorkspaceSwitcher } from "./workspace-switcher";
-import { SidebarButton } from "./sidebar-button";
 import { BellIcon, HomeIcon, MessagesSquareIcon, MoreHorizontalIcon } from "lucide-react";
+
+import { UserButton } from "@/features/auth/components/user-button";
+import { SidebarButton } from "./sidebar-button";
+import { WorkspaceSwitcher } from "./workspace-switcher";
 
 const Sidebar = () => {
   return (

@@ -1,8 +1,9 @@
-import { FormEvent, useState } from "react";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +11,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
-import { Button } from "@/components/ui/button";
 import { useCreateWorkspace } from "../api/use-create-workspace";
+import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 
 const CreateWorkspaceModal = () => {
   const router = useRouter();

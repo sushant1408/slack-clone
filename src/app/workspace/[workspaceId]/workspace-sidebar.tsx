@@ -6,17 +6,17 @@ import {
   SendHorizonalIcon,
 } from "lucide-react";
 
-import { useCurrentMember } from "@/features/members/api/use-current-member";
-import { useGetWorkspaceById } from "@/features/workspaces/api/use-get-workspace-by-id";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { WorkspaceHeader } from "./workspace-header";
-import { SidebarItem } from "./sidebar-item";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
-import { WorkspaceSection } from "./workspace-section";
-import { useGetMembers } from "@/features/members/api/use-get-members";
-import { UserItem } from "./user-item";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
+import { useGetMembers } from "@/features/members/api/use-get-members";
+import { useGetWorkspaceById } from "@/features/workspaces/api/use-get-workspace-by-id";
 import { useChannelId } from "@/hooks/use-channel-id";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { SidebarItem } from "./sidebar-item";
+import { UserItem } from "./user-item";
+import { WorkspaceHeader } from "./workspace-header";
+import { WorkspaceSection } from "./workspace-section";
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();

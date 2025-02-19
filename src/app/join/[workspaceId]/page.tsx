@@ -1,17 +1,17 @@
 "use client";
 
-import { useMemo, useEffect } from "react";
+import { LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LoaderIcon } from "lucide-react";
+import { useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
-import { InputOTP, InputOTPSlot } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { useJoinWorkspace } from "@/features/workspaces/api/use-join-workspace";
+import { InputOTP, InputOTPSlot } from "@/components/ui/input-otp";
 import { useGetWorkspaceInfoById } from "@/features/workspaces/api/use-get-workspace-info-by-id";
+import { useJoinWorkspace } from "@/features/workspaces/api/use-join-workspace";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 export default function JoinWorkspacePage() {
   const router = useRouter();

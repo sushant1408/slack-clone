@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ReactNode } from "react";
 
 interface TooltipWrapper {
   align?: "center" | "start" | "end";

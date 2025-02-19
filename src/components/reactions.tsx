@@ -1,11 +1,11 @@
 import { SmilePlusIcon } from "lucide-react";
 
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { Doc, Id } from "../../convex/_generated/dataModel";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
-import { TooltipWrapper } from "./tooltip-wrapper";
+import { Doc, Id } from "../../convex/_generated/dataModel";
 import { EmojiPopover } from "./emoji-popover";
+import { TooltipWrapper } from "./tooltip-wrapper";
 
 interface ReactionsProps {
   data: Array<

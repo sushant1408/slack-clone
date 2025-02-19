@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,12 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Doc } from "../../../../convex/_generated/dataModel";
 import { ChevronDownIcon, SquarePenIcon } from "lucide-react";
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { PreferencesModal } from "./preferences-modal";
-import { useState } from "react";
+import { Doc } from "../../../../convex/_generated/dataModel";
 import { InviteModal } from "./invite-modal";
+import { PreferencesModal } from "./preferences-modal";
 
 interface WorkspaceHeaderProps {
   workspace: Doc<"workspaces">;

@@ -1,8 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from "react";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,10 +11,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useCreateChannelModal } from "../store/use-create-channel-modal";
-import { useCreateChannel } from "../api/use-create-channel";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useCreateChannel } from "../api/use-create-channel";
+import { useCreateChannelModal } from "../store/use-create-channel-modal";
 
 const CreateChannelModal = () => {
   const router = useRouter();

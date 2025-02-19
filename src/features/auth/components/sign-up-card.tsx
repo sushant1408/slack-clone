@@ -1,11 +1,11 @@
 "use client";
 
+import { useAuthActions } from "@convex-dev/auth/react";
+import { TriangleAlertIcon } from "lucide-react";
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import Link from "next/link";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { TriangleAlertIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {

@@ -6,9 +6,9 @@ import { useEffect, useMemo } from "react";
 
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetWorkspaceById } from "@/features/workspaces/api/use-get-workspace-by-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { useCurrentMember } from "@/features/members/api/use-current-member";
 
 export default function WorkspaceIdScreen() {
   const router = useRouter();

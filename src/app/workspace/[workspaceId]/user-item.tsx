@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
+import Link from "next/link";
 
-import { Id } from "../../../../convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 const userItemVariants = cva(
   "flex items-center gap-1.5 justify-start font-normal h-7 px-4 text-sm overflow-hidden",

@@ -11,8 +11,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useNewJoinCode } from "@/features/workspaces/api/use-new-join-code";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useConfirm } from "@/hooks/use-confirm";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface InviteModalProps {
   open: boolean;

@@ -1,12 +1,12 @@
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { ConvexClientProvider } from "@/components/convex-client-provider";
+import { JotaiProvider } from "@/components/jotai-provider";
 import { Modals } from "@/components/modals";
 import { Toaster } from "@/components/ui/sonner";
-import { JotaiProvider } from "@/components/jotai-provider";
 import "./globals.css";
 
 const inter = Inter({

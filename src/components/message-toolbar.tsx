@@ -6,15 +6,16 @@ import {
   TrashIcon,
 } from "lucide-react";
 
-import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 import { EmojiPopover } from "./emoji-popover";
+import { TooltipWrapper } from "./tooltip-wrapper";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { TooltipWrapper } from "./tooltip-wrapper";
 
 interface MessageToolbarProps {
   isAuthor: boolean;
@@ -24,6 +25,7 @@ interface MessageToolbarProps {
   handleDelete: () => void;
   handleReaction: (value: string) => void;
   hideThreadButton?: boolean;
+  messageToolbarClassName?: string;
 }
 
 const MessageToolbar = ({
@@ -34,9 +36,10 @@ const MessageToolbar = ({
   isAuthor,
   isPending,
   hideThreadButton,
+  messageToolbarClassName,
 }: MessageToolbarProps) => {
   return (
-    <div className="absolute -top-4 right-5">
+    <div className={cn("absolute -top-4 right-5", messageToolbarClassName)}>
       <div className="group-hover:opacity-100 opacity-0 transition-opacity border bg-white rounded-md shadow-sm">
         <EmojiPopover
           hint="Add reaction..."

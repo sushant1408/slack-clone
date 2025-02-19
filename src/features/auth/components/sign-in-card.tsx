@@ -1,10 +1,11 @@
 "use client";
 
+import { useAuthActions } from "@convex-dev/auth/react";
+import { TriangleAlertIcon } from "lucide-react";
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { TriangleAlertIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 
 const SignInCard = () => {
   const [email, setEmail] = useState("");

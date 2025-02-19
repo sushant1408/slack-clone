@@ -1,15 +1,15 @@
-import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
-
-import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
-import { Doc, Id } from "../../convex/_generated/dataModel";
-import { Message } from "./message";
-import { ChannelHero } from "./channel-hero";
-import { useState } from "react";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { useCurrentMember } from "@/features/members/api/use-current-member";
+import { differenceInMinutes, format } from "date-fns";
 import { LoaderIcon } from "lucide-react";
+import { useState } from "react";
 
-const TIME_THRESHOLD = 5; // 5 minutes
+import { useCurrentMember } from "@/features/members/api/use-current-member";
+import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { TIME_THRESHOLD } from "@/lib/constants";
+import { formatDateLabel } from "@/lib/utils";
+import { Doc, Id } from "../../convex/_generated/dataModel";
+import { ChannelHero } from "./channel-hero";
+import { Message } from "./message";
 
 interface MessageListProps {
   memberName?: Doc<"users">["name"];
@@ -22,19 +22,6 @@ interface MessageListProps {
   isLoadingMore: boolean;
   canLoadMore: boolean;
 }
-
-const formatDateLabel = (dateStr: string) => {
-  const date = new Date(dateStr);
-
-  if (isToday(date)) {
-    return "Today";
-  }
-  if (isYesterday(date)) {
-    return "Yesterday";
-  }
-
-  return format(date, "EEEE, MMMM d");
-};
 
 const MessageList = ({
   canLoadMore,
@@ -128,6 +115,7 @@ const MessageList = ({
         </div>
       ))}
 
+      {/* present but almost invisible div to load more messages whenever this div is visible */}
       <div
         className="h-1"
         ref={(el) => {

@@ -1,9 +1,8 @@
 import { usePaginatedQuery } from "convex/react";
+
+import { BATCH_SIZE } from "@/lib/constants";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-
-// this will decide how many messages to load at once or per page
-const BATCH_SIZE = 10;
 
 interface UseGetMessagesProps {
   channelId?: Id<"channels">;
