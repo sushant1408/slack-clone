@@ -14,6 +14,7 @@ import { Reactions } from "./reactions";
 import { Thumbnail } from "./thumbnail";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { ThreadBar } from "./thread-bar";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
 const Editor = dynamic(() => import("./editor"), { ssr: false });
@@ -40,6 +41,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
   messageToolbarClassName?: string;
 }
@@ -65,6 +67,7 @@ const Message = ({
   isCompact,
   threadCount,
   threadImage,
+  threadName,
   threadTimestamp,
   messageToolbarClassName,
 }: MessageProps) => {
@@ -177,6 +180,13 @@ const Message = ({
                   </span>
                 ) : null}
                 <Reactions data={reactions} onChange={handleReaction} />
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  timestamp={threadTimestamp}
+                  name={threadName}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             )}
           </div>
@@ -246,6 +256,13 @@ const Message = ({
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
               <Reactions data={reactions} onChange={handleReaction} />
+              <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                name={threadName}
+                timestamp={threadTimestamp}
+                onClick={() => onOpenMessage(id)}
+              />
             </div>
           )}
         </div>

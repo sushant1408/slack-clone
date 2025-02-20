@@ -17,6 +17,8 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { useCreateMessage } from "../api/use-create-message";
 import { useGetMessageById } from "../api/use-get-message-by-id";
 import { useGetMessages } from "../api/use-get-messages";
+import { useGetConversationId } from "@/features/conversations/api/use-get-conversation-id";
+import { useMemberId } from "@/hooks/use-member-id";
 
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
@@ -36,6 +38,7 @@ type ReplyMessageValues = {
 const Threads = ({ messageId, onClose }: ThreadsProps) => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
+  const memberId = useMemberId();
 
   const [editorKey, setEditorkey] = useState(0);
   const [isPending, setIsPending] = useState(false);
@@ -45,8 +48,13 @@ const Threads = ({ messageId, onClose }: ThreadsProps) => {
 
   const { isLoading, messageById } = useGetMessageById({ messageId });
   const { currentMember } = useCurrentMember({ workspaceId });
+  const { conversationId } = useGetConversationId({
+    memberId,
+    workspaceId,
+  });
   const { results, status, loadMore } = useGetMessages({
     channelId,
+    conversationId: conversationId!,
     parentMessageId: messageId,
   });
 
@@ -238,6 +246,7 @@ const Threads = ({ messageId, onClose }: ThreadsProps) => {
                   threadCount={message.threadCount}
                   threadImage={message.threadImage}
                   threadTimestamp={message.threadTimestamp}
+                  threadName={message.threadName}
                 />
               );
             })}

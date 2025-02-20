@@ -2,7 +2,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 
 import { Id } from "./_generated/dataModel";
-import { mutation, QueryCtx } from "./_generated/server";
+import { mutation, query, QueryCtx } from "./_generated/server";
 
 const getMember = async (
   ctx: QueryCtx,
@@ -66,5 +66,50 @@ export const createOrGetConversation = mutation({
     });
 
     return newConversationId;
+  },
+});
+
+export const getConversationId = query({
+  args: { workspaceId: v.id("workspaces"), memberId: v.id("members") },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (!userId) {
+      return null;
+    }
+
+    const currentMember = await getMember(ctx, args.workspaceId, userId);
+    const otherMember = await ctx.db.get(args.memberId);
+
+    if (!currentMember || !otherMember) {
+      return null;
+    }
+
+    /**
+     * find the conversation between memberOne and memberTwo started by
+     * either memberOne or memberTwo
+     */
+    const conversation = await ctx.db
+      .query("conversations")
+      .filter((q) => q.eq(q.field("workspaceId"), args.workspaceId))
+      .filter((q) =>
+        q.or(
+          q.and(
+            q.eq(q.field("memberOneId"), currentMember._id),
+            q.eq(q.field("memberTwoId"), otherMember._id)
+          ),
+          q.and(
+            q.eq(q.field("memberOneId"), otherMember._id),
+            q.eq(q.field("memberTwoId"), currentMember._id)
+          )
+        )
+      )
+      .unique();
+
+    if (!conversation) {
+      return null;
+    }
+
+    return conversation._id;
   },
 });
