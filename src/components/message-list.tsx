@@ -9,6 +9,7 @@ import { TIME_THRESHOLD } from "@/lib/constants";
 import { formatDateLabel } from "@/lib/utils";
 import { Doc, Id } from "../../convex/_generated/dataModel";
 import { ChannelHero } from "./channel-hero";
+import { ConversationHero } from "./conversation-hero";
 import { Message } from "./message";
 
 interface MessageListProps {
@@ -145,6 +146,9 @@ const MessageList = ({
 
       {variant === "channel" && channelName && channelCreationTime ? (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      ) : null}
+      {variant === "conversation" && memberName ? (
+        <ConversationHero image={memberImage} name={memberName} />
       ) : null}
     </div>
   );

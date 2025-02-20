@@ -17,10 +17,13 @@ import { SidebarItem } from "./sidebar-item";
 import { UserItem } from "./user-item";
 import { WorkspaceHeader } from "./workspace-header";
 import { WorkspaceSection } from "./workspace-section";
+import { useMemberId } from "@/hooks/use-member-id";
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
+  const memberId = useMemberId();
+
   const [_open, setOpen] = useCreateChannelModal();
 
   const { currentMember, isLoading: isCurrentMemberLoading } = useCurrentMember(
@@ -99,6 +102,7 @@ const WorkspaceSidebar = () => {
             label={item.user.name}
             image={item.user.image}
             id={item._id}
+            variant={item._id === memberId ? "active" : "default"}
           />
         ))}
       </WorkspaceSection>

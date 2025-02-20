@@ -180,7 +180,7 @@ const Threads = ({ messageId, onClose }: ThreadsProps) => {
           <XIcon className="!size-5 stroke-1.5" />
         </Button>
       </div>
-      <div className="flex flex-col pb-4 overflow-y-auto messages-scrollbar">
+      <div className="flex flex-col pb-2 overflow-y-auto messages-scrollbar">
         {/* parent message */}
         <Message
           hideThreadButton
