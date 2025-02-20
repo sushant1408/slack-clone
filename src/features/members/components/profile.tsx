@@ -184,7 +184,6 @@ const Profile = ({ memberId, onClose }: ProfileProps) => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    // onClick={handleUpdateMember}
                     disabled={isRemovingMember || isUpdatingMember}
                     variant="outline"
                     className="w-full capitalize"

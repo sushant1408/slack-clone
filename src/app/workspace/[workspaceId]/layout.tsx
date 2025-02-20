@@ -42,7 +42,9 @@ export default function WorkspaceIdLayout({
             <WorkspaceSidebar />
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel minSize={20}>{children}</ResizablePanel>
+          <ResizablePanel minSize={20} defaultSize={80}>
+            {children}
+          </ResizablePanel>
 
           {showPanel && (
             <>
