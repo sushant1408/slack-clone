@@ -71,7 +71,13 @@ const Message = ({
   threadTimestamp,
   messageToolbarClassName,
 }: MessageProps) => {
-  const { parentMessageId, onOpenMessage, onCloseMessage } = usePanel();
+  const {
+    parentMessageId,
+    onOpenMessage,
+    onClose,
+    onOpenProfile,
+    profileMemberId,
+  } = usePanel();
 
   const [ConfirmationDialog, confirm] = useConfirm({
     message:
@@ -118,7 +124,7 @@ const Message = ({
           setEditingId(null);
 
           if (parentMessageId === id) {
-            onCloseMessage();
+            onClose();
           }
         },
         onError: () => {
@@ -219,7 +225,7 @@ const Message = ({
         )}
       >
         <div className="flex items-start gap-2">
-          <button>
+          <button onClick={() => onOpenProfile(memberId)}>
             <Avatar>
               <AvatarFallback className="text-xs">
                 {authorName.charAt(0).toUpperCase()}
@@ -240,7 +246,10 @@ const Message = ({
           ) : (
             <div className="flex flex-col w-full overflow-hidden">
               <div className="text-sm">
-                <button className="font-bold text-primary hover:underline">
+                <button
+                  onClick={() => onOpenProfile(memberId)}
+                  className="font-bold text-primary hover:underline"
+                >
                   {authorName}
                 </button>
                 <span>&nbsp;&nbsp;</span>

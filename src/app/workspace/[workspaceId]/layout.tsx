@@ -8,6 +8,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Profile } from "@/features/members/components/profile";
 import { Threads } from "@/features/messages/components/thread";
 import { usePanel } from "@/hooks/use-panel";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -20,9 +21,9 @@ export default function WorkspaceIdLayout({
 }: {
   children: ReactNode;
 }) {
-  const { parentMessageId, onCloseMessage } = usePanel();
+  const { parentMessageId, onClose, profileMemberId } = usePanel();
 
-  const showPanel = !!parentMessageId;
+  const showPanel = !!parentMessageId || !!profileMemberId;
 
   return (
     <div className="h-full [--toolbar-h:40px]">
@@ -48,7 +49,15 @@ export default function WorkspaceIdLayout({
               <ResizableHandle />
               <ResizablePanel minSize={20} defaultSize={29}>
                 {parentMessageId ? (
-                  <Threads messageId={parentMessageId as Id<"messages">} onClose={onCloseMessage} />
+                  <Threads
+                    messageId={parentMessageId as Id<"messages">}
+                    onClose={onClose}
+                  />
+                ) : profileMemberId ? (
+                  <Profile
+                    memberId={profileMemberId as Id<"members">}
+                    onClose={onClose}
+                  />
                 ) : (
                   <div className="flex h-full items-center justify-center">
                     <LoaderIcon className="animate-spin !size-5 text-muted-foreground" />
