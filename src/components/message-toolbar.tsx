@@ -16,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { EmojiClickData } from "emoji-picker-react";
 
 interface MessageToolbarProps {
   isAuthor: boolean;
@@ -43,7 +44,7 @@ const MessageToolbar = ({
       <div className="group-hover:opacity-100 opacity-0 transition-opacity border bg-white rounded-md shadow-sm">
         <EmojiPopover
           hint="Add reaction..."
-          onEmojiSelect={(emoji) => handleReaction(emoji.native)}
+          onEmojiSelect={(value: EmojiClickData) => handleReaction(value.emoji)}
         >
           <Button variant="ghost" size="icon-sm" disabled={isPending}>
             <SmileIcon />

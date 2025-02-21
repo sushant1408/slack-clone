@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { EmojiPopover } from "./emoji-popover";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { Button } from "./ui/button";
+import { EmojiClickData } from "emoji-picker-react";
 
 type EditorValue = {
   image: File | null;
@@ -157,9 +158,9 @@ const Editor = ({
     }
   };
 
-  const onEmojiSelect = (emoji: any) => {
+  const onEmojiSelect = (value: EmojiClickData) => {
     const quill = quillRef.current;
-    quill?.insertText(quill?.getSelection()?.index || 0, emoji.native);
+    quill?.insertText(quill?.getSelection()?.index || 0, value.emoji);
   };
 
   // replace '\n' or any empty HTML tags for e.g <br /> or <p></p>, remove any white spaces and check for length

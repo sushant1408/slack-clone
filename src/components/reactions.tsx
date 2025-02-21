@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Doc, Id } from "../../convex/_generated/dataModel";
 import { EmojiPopover } from "./emoji-popover";
 import { TooltipWrapper } from "./tooltip-wrapper";
+import { EmojiClickData } from "emoji-picker-react";
 
 interface ReactionsProps {
   data: Array<
@@ -14,7 +15,7 @@ interface ReactionsProps {
       memberIds: Id<"members">[];
     }
   >;
-  onChange: (value: string) => void;
+  onChange: (value: EmojiClickData["emoji"]) => void;
 }
 
 const Reactions = ({ data, onChange }: ReactionsProps) => {
@@ -56,7 +57,7 @@ const Reactions = ({ data, onChange }: ReactionsProps) => {
       ))}
       <EmojiPopover
         hint="Add reaction"
-        onEmojiSelect={(emoji) => onChange(emoji.native)}
+        onEmojiSelect={(value: EmojiClickData) => onChange(value.emoji)}
       >
         <button className="h-6 px-3 rounded-full bg-slate-200/70 border border-transparent hover:border-slate-500 text-slate-800 flex items-center">
           <SmilePlusIcon className="!size-4" />

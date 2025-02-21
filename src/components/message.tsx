@@ -15,6 +15,7 @@ import { Thumbnail } from "./thumbnail";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ThreadBar } from "./thread-bar";
+import { EmojiClickData } from "emoji-picker-react";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
 const Editor = dynamic(() => import("./editor"), { ssr: false });
@@ -134,7 +135,7 @@ const Message = ({
     );
   };
 
-  const handleReaction = (value: string) => {
+  const handleReaction = (value: EmojiClickData["emoji"]) => {
     toggleReaction(
       { messageId: id, value },
       {
