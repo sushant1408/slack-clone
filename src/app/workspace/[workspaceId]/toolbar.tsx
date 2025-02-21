@@ -18,6 +18,7 @@ import { DialogTitle } from "@/components/ui/dialog";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import Link from "next/link";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 
 const Toolbar = () => {
   const workspaceId = useWorkspaceId();
@@ -79,9 +80,13 @@ const Toolbar = () => {
         </CommandDialog>
       </div>
       <div className="ml-auto flex-1 flex items-center justify-end">
-        <Button variant="transparent" size="icon-sm">
-          <InfoIcon className="!size-5 text-white" />
-        </Button>
+        <TooltipWrapper label="Get help">
+          <Button variant="transparent" size="icon-sm" asChild>
+            <Link href="mailto:gandhi.sushant1408@gmail.com">
+              <InfoIcon className="!size-5 text-white" />
+            </Link>
+          </Button>
+        </TooltipWrapper>
       </div>
     </nav>
   );
