@@ -14,6 +14,41 @@ This is a **Slack Clone** - a real-time team messaging and collaboration applica
 - **State Management:** Jotai (lightweight atoms) + React hooks
 - **Rich Text:** Quill editor with emoji support
 
+## Environment Setup
+
+### Prerequisites
+
+Before running the project, you need to set up accounts and obtain API keys:
+
+1. **Convex** (Backend Database & Functions)
+   - Create account at https://dashboard.convex.dev
+   - Create a new project
+   - Copy your deployment URL and deployment name
+
+2. **Google OAuth** (Optional - Authentication)
+   - Go to https://console.cloud.google.com
+   - Create OAuth 2.0 credentials (Web application)
+   - Add `http://localhost:3008/auth/callback/google` as authorized redirect URI
+   - Copy Client ID and Client Secret
+
+3. **GitHub OAuth** (Optional - Authentication)
+   - Go to https://github.com/settings/developers
+   - Create a new OAuth App
+   - Set Authorization callback URL to `http://localhost:3008/auth/callback/github`
+   - Copy Client ID and Client Secret
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Then update `.env` with your actual credentials from the prerequisites above.
+
+**Important**: Never commit `.env` to version control. The `.env.example` file shows the required variables without secrets.
+
 ## Development Commands
 
 ```bash
@@ -27,7 +62,7 @@ npm run dev
 npx convex dev
 
 # Build for production
-npm build
+npm run build
 
 # Run production build
 npm start
@@ -253,3 +288,84 @@ Messages support parent-child relationships:
 - Ensure `NEXT_PUBLIC_CONVEX_URL` environment variable is set
 - Configure OAuth providers (GitHub, Google) with correct callback URLs
 - Convex project must be deployed to production
+
+## Dependencies & Libraries
+
+### Core Framework & Runtime
+
+- `next` (15.1.7) - React framework for production with server-side rendering, static site generation, and API routes
+- `react` (19.0.0) - JavaScript library for building user interfaces with components and hooks
+- `react-dom` (19.0.0) - Entry point to the DOM and server renderers for React
+
+### Backend & Database
+
+- `convex` (1.19.2) - Serverless backend platform providing real-time database, functions, and authentication
+- `@convex-dev/auth` (0.0.80) - Convex authentication library supporting OAuth and password-based auth
+- `@auth/core` (0.37.0) - Core authentication logic for integrating with OAuth providers
+
+### UI Components & Styling
+
+- `@radix-ui/react-avatar` (1.1.3) - Accessible avatar component for displaying user images
+- `@radix-ui/react-dialog` (1.1.6) - Accessible dialog/modal component with focus management
+- `@radix-ui/react-dropdown-menu` (2.1.6) - Accessible dropdown menu component
+- `@radix-ui/react-popover` (1.1.6) - Accessible popover component for tooltips and dropdowns
+- `@radix-ui/react-separator` (1.1.2) - Semantic separator/divider component
+- `@radix-ui/react-slot` (1.1.2) - Utility for merging props and composing components
+- `@radix-ui/react-tooltip` (1.1.8) - Accessible tooltip component for additional context
+- `tailwindcss` (3.4.1) - Utility-first CSS framework for rapid UI development
+- `tailwind-merge` (3.0.1) - Utility for merging Tailwind CSS classes without conflicts
+- `tailwindcss-animate` (1.0.7) - Tailwind CSS plugin providing animation utilities
+- `class-variance-authority` (0.7.1) - Type-safe component variant management for styling flexibility
+- `clsx` (2.1.1) - Utility for constructing className strings conditionally
+
+### State Management
+
+- `jotai` (2.12.0) - Lightweight atom-based state management library for managing global and component state
+- `react-use` (17.6.0) - Collection of React hooks for common use cases
+
+### URL & Query Parameters
+
+- `nuqs` (2.4.0) - Type-safe URL search parameters management for Next.js
+
+### Date & Time
+
+- `date-fns` (4.1.0) - Modern date utility library for parsing, formatting, and manipulating dates
+
+### Rich Text & Editor
+
+- `quill` (2.0.3) - Powerful rich text editor with support for formatting, embeds, and custom modules
+- `emoji-mart` (5.6.0) - Comprehensive emoji picker component with search and categories
+- `emoji-picker-react` (4.12.0) - React emoji picker with accessibility features
+
+### Forms & Input
+
+- `input-otp` (1.4.2) - One-time password input component for OTP authentication flows
+- `cmdk` (1.0.4) - Fast command menu component for command palettes and shortcuts
+
+### Icons
+
+- `lucide-react` (0.475.0) - Minimal icon library providing consistent, accessible SVG icons
+- `react-icons` (5.4.0) - Popular icon libraries (Font Awesome, Feather, etc.) as React components
+
+### Layout & Resizing
+
+- `react-resizable-panels` (2.1.7) - Resizable panel component for flexible layouts (sidebar, main content, etc.)
+
+### Notifications & Feedback
+
+- `sonner` (1.7.4) - Toast notification library providing elegant, accessible notifications
+
+### Theming
+
+- `next-themes` (0.4.4) - Dark mode and theme management for Next.js applications
+
+### Development & Tooling
+
+- `typescript` (5) - Static type checking for JavaScript
+- `eslint` (9) - JavaScript linter for code quality and consistency
+- `eslint-config-next` (15.1.7) - ESLint configuration for Next.js projects
+- `@eslint/eslintrc` (3) - ESLint configuration utilities
+- `@types/node` (20) - TypeScript type definitions for Node.js
+- `@types/react` (19) - TypeScript type definitions for React
+- `@types/react-dom` (19) - TypeScript type definitions for React DOM
+- `postcss` (8) - CSS transformations plugin system for processing Tailwind CSS
